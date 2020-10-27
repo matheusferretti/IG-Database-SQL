@@ -8,6 +8,7 @@ from eralchemy import render_er
 
 Base = declarative_base()
 
+
 class Person(Base):
     __tablename__ = 'person'
     # Here we define columns for the table person
