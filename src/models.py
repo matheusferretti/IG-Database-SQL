@@ -38,6 +38,10 @@ class Customer(Base):
     address = Column(String(250))
 
 class Bill(Base):
+    id = Column(Integer, ForeignKey('shoppingcart.bill_id'))
+    shoppingcart = relationship(ShoppingCart)
+    
+
 
     def to_dict(self):
         return {}
