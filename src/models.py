@@ -40,7 +40,9 @@ class Customer(Base):
 class Bill(Base):
     id = Column(Integer, ForeignKey('shoppingcart.bill_id'))
     shoppingcart = relationship(ShoppingCart)
-    
+    created_at = Column(datetime)
+    total_price = Column(float(250))
+    status = enum("paid","pending","refunded")
 
 
     def to_dict(self):
