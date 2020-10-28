@@ -9,40 +9,43 @@ from eralchemy import render_er
 Base = declarative_base()
 
 
-class ShoppingCart(Base):
-    __tablename__ = 'shoppingcart'
+class User(Base):
+    __tablename__ = 'user'
     # Here we define columns for the table person
     # Notice that each column is also a normal Python instance attribute.
-    product_id = Column(Integer, primary_key=True)
-    customer_id = Column(String(250))
-    quantity = Column(Integer(250))
-    price = Column(float(250))
-    bill_id = Column(Integer(250), nullable=False)
+    id = Column(Integer, primary_key=True, nullable = True, unique=True)
+    username = Column(String(250), nullable=False, unique=True)
+    firstname = Column(String(250), nullable=False, unique=True)
+    lastname = Column(String(250), nullable=False, unique=True)
+    email = Column(String(250), nullable=False, unique=True)
 
-class Product(Base):
-    __tablename__ = 'product'
+class Comment(Base):
+    __tablename__ = 'comment'
     # Here we define columns for the table address.
     # Notice that each column is also a normal Python instance attribute.
-    id = Column(Integer, ForeignKey('shoppingcart.product_id'))
-    shoppingcart = relationship(ShoppingCart)
-    name = Column(String(250))
-    pricing = Column(float(250))
-    weight = Column(float(250), nullable=False)
+    id = Column(Integer(250), primary_key = True, nullable = True, unique=True)
+    comment_text = Column(String(250), nullable = True, unique=True)
+    author_id = Column(String(250), ForeignKey('user.id'), nullable=False)
+    post_id = Column(String(250), ForeignKey('post.id'), nullable=False)
 
-class Customer(Base):
-    id = Column(Integer, ForeignKey('shoppingcart.customer_id'))
-    shoppingcart = relationship(ShoppingCart)
-    first_name = Column(String(250))
-    last_name = Column(String(250))
-    email = Column(String(250))
-    address = Column(String(250))
+class Post(Base):
+    __tablename__ = 'post'
+    id = Column(Integer(250), primary_key = True, nullable = True, unique=True)
+    user_id = Column(Integer(250), nullable=True)
 
-class Bill(Base):
-    id = Column(Integer, ForeignKey('shoppingcart.bill_id'))
-    shoppingcart = relationship(ShoppingCart)
-    created_at = Column(datetime)
-    total_price = Column(float(250))
-    status = enum("paid","pending","refunded")
+class Media(Base):
+    __tablename__ = 'media'
+    id = Column(Integer(250), primary_key = True, nullable = True, unique=True)
+    type = enumerate()
+    url = Column(String(250), nullable=True)
+    post_id = Column(Integer, ForeignKey('Post.id'), nullable=False)
+
+class Followers(Base):
+    __tablename__ = 'followers'
+    id = Column(Integer(250), primary_key = True, nullable = True, unique=True)
+    user_from_id = Column(Integer, ForeignKey('User.id'), nullable=False)
+    user_to_id = Column(Integer, ForeignKey('User.id'), nullable=False)
+
 
 
     def to_dict(self):
